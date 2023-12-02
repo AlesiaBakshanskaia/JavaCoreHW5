@@ -9,8 +9,10 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        File distination = new File("..\\backup");
+        distination.mkdir();
 
-        checkDir(new File("."), ".\\backup");
+        checkDir(new File("."), "..\\backup");
     }
 
     static void copyFile(String fileNameIn, String fileNameOut) throws IOException {
@@ -26,23 +28,6 @@ public class Main {
         }
     }
 
-//    private static void copyDirectory(File sourceDirectory, File destinationDirectory) throws IOException {
-//        if (!destinationDirectory.exists()) {
-//            destinationDirectory.mkdir();
-//        }
-//        for (String f : sourceDirectory.list()) {
-//            copyDirectoryCompatibityMode(new File(sourceDirectory, f), new File(destinationDirectory, f));
-//        }
-//    }
-//
-//    public static void copyDirectoryCompatibityMode(File source, File destination) throws IOException {
-//        if (source.isDirectory()) {
-//            copyDirectory(source, destination);
-//        } else {
-//            copyFile(source, destination);
-//        }
-//    }
-
 
     static void checkDir(File filein, String fileout) throws IOException {
 
@@ -57,11 +42,10 @@ public class Main {
             if (files[i].isDirectory()) {
                 File distination = new File(fileout + str.substring(1));
                 distination.mkdir();
-
-//                checkDir(files[i], fileout + str.substring(1));
+                checkDir(files[i], fileout);
             }
             if (files[i].isFile()) {
-                copyFile(files[i].getName(), fileout + str.substring(1));
+                copyFile(files[i].getPath(), fileout + str.substring(1));
             }
         }
     }
