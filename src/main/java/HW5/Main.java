@@ -9,10 +9,10 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File distination = new File("..\\backup");
+        File distination = new File(".\\backup");
         distination.mkdir();
 
-        checkDir(new File("."), "..\\backup");
+        checkDir(new File("."), ".\\backup");
     }
 
     static void copyFile(String fileNameIn, String fileNameOut) throws IOException {
@@ -40,9 +40,13 @@ public class Main {
             String str = files[i].getPath();
 
             if (files[i].isDirectory()) {
-                File distination = new File(fileout + str.substring(1));
-                distination.mkdir();
-                checkDir(files[i], fileout);
+
+                if(!(files[i].getPath().equals(fileout))) {
+                    File distination = new File(fileout + str.substring(1));
+                    distination.mkdir();
+                    checkDir(files[i], fileout);
+                }
+
             }
             if (files[i].isFile()) {
                 copyFile(files[i].getPath(), fileout + str.substring(1));
