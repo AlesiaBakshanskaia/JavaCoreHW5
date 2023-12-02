@@ -28,24 +28,24 @@ public class Tree {
             return;
 
         int subDirTotal = 0;
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory())
+        for (File value : files) {
+            if (value.isDirectory())
                 subDirTotal++;
         }
         int subFileTotal = 0;
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isFile())
+        for (File value : files) {
+            if (value.isFile())
                 subFileTotal++;
         }
 
         int subDirCounter = 0;
         int subFileCounter = 0;
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory()) {
-                print(files[i], indent, subDirTotal == ++subDirCounter);
+        for (File value : files) {
+            if (value.isDirectory()) {
+                print(value, indent, subDirTotal == ++subDirCounter);
             }
-            if (files[i].isFile()) {
-                print(files[i], indent, subFileTotal == ++subFileCounter);
+            if (value.isFile()) {
+                print(value, indent, subFileTotal == ++subFileCounter);
             }
         }
     }
