@@ -9,18 +9,25 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File distination = new File(".\\backup");
-        distination.mkdir();
+        //создаем папку для резервной копии
+        File backupCopy = new File(".\\backup");
+        backupCopy.mkdir();
 
-        checkDir(new File("."), ".\\backup");
+        createCopy(new File("."), ".\\backup");
     }
 
-    static void copyFile(String fileNameIn, String fileNameOut) throws IOException {
+    /**
+     * метод побитового копирования файла
+     * @param originalFile путь к копируемому файлу
+     * @param copyFile путь для создания копии
+     * @throws IOException искоючение пробрасываем выше
+     */
+    static void copyFile(String originalFile, String copyFile) throws IOException {
         // На запись
-        try (FileOutputStream fileOutputStream = new FileOutputStream(fileNameOut)) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(copyFile)) {
             int c;
             // На чтение
-            try (FileInputStream fileInputStream = new FileInputStream(fileNameIn)) {
+            try (FileInputStream fileInputStream = new FileInputStream(originalFile)) {
                 while ((c = fileInputStream.read()) != -1) {
                     fileOutputStream.write(c);
                 }
@@ -28,28 +35,32 @@ public class Main {
         }
     }
 
+    /**
+     * метод прохождения дерева файлов
+     * @param originalFile копируемый объект
+     * @param pathForCopy путь для размещения копии
+     * @throws IOException исключение пробрасываем выше
+     */
+    static void createCopy(File originalFile, String pathForCopy) throws IOException {
 
-    static void checkDir(File filein, String fileout) throws IOException {
-
-        File[] files = filein.listFiles();
+        File[] files = originalFile.listFiles();
         if (files == null)
             return;
 
-        for (int i = 0; i < files.length; i++) {
+        for (File file : files) {
 
-            String str = files[i].getPath();
 
-            if (files[i].isDirectory()) {
+            if (file.isDirectory()) {
 
-                if(!(files[i].getPath().equals(fileout))) {
-                    File distination = new File(fileout + str.substring(1));
-                    distination.mkdir();
-                    checkDir(files[i], fileout);
+                if (!(file.getPath().equals(pathForCopy))) {   //пропускать папку, в которую мы все копируем
+                    File copyDir = new File(pathForCopy + file.getPath().substring(1));
+                    copyDir.mkdir();
+                    createCopy(file, pathForCopy);
                 }
 
             }
-            if (files[i].isFile()) {
-                copyFile(files[i].getPath(), fileout + str.substring(1));
+            if (file.isFile()) {
+                copyFile(file.getPath(), pathForCopy + file.getPath().substring(1));
             }
         }
     }
